@@ -1,8 +1,8 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Container } from "../components/common/layout/Container";
-import { AppDesktopSidebar } from "../components/layout/AppDesktopSidebar";
-import { AppMobileHeader } from "../components/layout/AppMobileHeader";
-import { AppMobileNavSheet } from "../components/layout/AppMobileNavSheet";
+import { Container } from "../components/layout/Container";
+import { AppDesktopSidebar } from "../components/menu/AppDesktopSidebar";
+import { AppMobileHeader } from "../components/menu/AppMobileHeader";
+import { AppMobileNavSheet } from "../components/menu/AppMobileNavSheet";
 import { MD_BREAKPOINT_PX, MIN_WIDTH_QUERY } from "../constants/styles";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { APP_NAV_ITEMS } from "./navigation";

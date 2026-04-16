@@ -1,4 +1,4 @@
-import { Section } from "../../components/common/layout/Section";
+import { Section } from "../../components/layout/Section";
 import { Card } from "../../components/ui/Card";
 
 export function AppointmentsPage() {

@@ -1,9 +1,9 @@
 import { format } from "date-fns";
 import { RefreshCcw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { ResponsiveGrid } from "../../components/common/layout/ResponsiveGrid";
-import { Section } from "../../components/common/layout/Section";
-import { Stack } from "../../components/common/layout/Stack";
+import { ResponsiveGrid } from "../../components/layout/ResponsiveGrid";
+import { Section } from "../../components/layout/Section";
+import { Stack } from "../../components/layout/Stack";
 import { Card } from "../../components/ui/Card";
 import { UserAvatar } from "../../components/ui/UserAvatar";
 import { Button } from "../../components/ui/Button";

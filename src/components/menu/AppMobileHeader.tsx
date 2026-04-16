@@ -1,5 +1,5 @@
 import { Menu, X } from "lucide-react";
-import { Container } from "../common/layout/Container";
+import { Container } from "../layout/Container";
 import { AppBrand } from "./AppBrand";
 
 interface AppMobileHeaderProps {
