@@ -55,20 +55,27 @@ export function HomePage() {
 
         <ResponsiveGrid>
           <Card>
-            <h2 className="mb-2 text-sm font-medium uppercase tracking-wide text-slate-500">API Base URL</h2>
-            <p className="break-all text-sm text-slate-700">https://kiddle-code-challenge-0b5750a3aba2.herokuapp.com/</p>
+            <h2 className="mb-2 text-sm font-medium uppercase tracking-wide text-slate-500">System Status</h2>
+            <p className="text-2xl font-semibold text-slate-900">{error ? "Issue detected" : "Operational"}</p>
+            <p className="mt-1 text-sm text-slate-600">Overview block for dashboard home.</p>
           </Card>
           <Card>
-            <h2 className="mb-2 text-sm font-medium uppercase tracking-wide text-slate-500">Status</h2>
-            <p className="text-sm text-slate-700">{error ? "Request failed" : "Ready"}</p>
+            <h2 className="mb-2 text-sm font-medium uppercase tracking-wide text-slate-500">Total Widgets</h2>
+            <p className="text-2xl font-semibold text-slate-900">4</p>
+            <p className="mt-1 text-sm text-slate-600">Placeholder KPI for quick dashboard composition.</p>
           </Card>
           <Card>
-            <h2 className="mb-2 text-sm font-medium uppercase tracking-wide text-slate-500">Last Updated</h2>
+            <h2 className="mb-2 text-sm font-medium uppercase tracking-wide text-slate-500">Last Sync</h2>
             <p className="text-sm text-slate-700">
               {lastUpdatedAt ? format(lastUpdatedAt, "dd/MM/yyyy HH:mm:ss") : "No successful request yet"}
             </p>
           </Card>
         </ResponsiveGrid>
+
+        <Card>
+          <h2 className="mb-2 text-sm font-medium uppercase tracking-wide text-slate-500">API Base URL</h2>
+          <p className="break-all text-sm text-slate-700">https://kiddle-code-challenge-0b5750a3aba2.herokuapp.com/</p>
+        </Card>
 
         <Card>
           <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-500">Response Preview</h2>

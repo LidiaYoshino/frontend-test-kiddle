@@ -1,0 +1,15 @@
+import { createBrowserRouter } from "react-router-dom";
+import App from "../App";
+import { AppointmentsPage } from "../features/appointments/AppointmentsPage";
+import { HomePage } from "../features/home/HomePage";
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "appointments", element: <AppointmentsPage /> }
+    ]
+  }
+]);

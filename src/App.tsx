@@ -1,10 +1,10 @@
 import { AppShell } from "./app/AppShell";
-import { HomePage } from "./features/home/HomePage";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <AppShell>
-      <HomePage />
+      <Outlet />
     </AppShell>
   );
 }

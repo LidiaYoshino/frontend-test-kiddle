@@ -1,4 +1,4 @@
-# Frontend Test Base - Kiddle
+# Frontend Test Base - Kiddle Pass
 
 Frontend starter for a coding challenge using:
 
