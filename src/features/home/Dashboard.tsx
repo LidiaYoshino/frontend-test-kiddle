@@ -4,15 +4,15 @@ import { Stack } from "../../components/layout/Stack";
 import { Card } from "../../components/ui/Card";
 import { AppointmentsPerformance } from "./components/AppointmentsPerformance";
 
-export function HomePage() {
+export function Dashboard() {
   return (
     <Section>
       <Stack className="gap-6">
         <Card>
           <div className="flex items-center gap-3">
             <div>
-              <h1 className="text-xl font-semibold sm:text-2xl">Frontend Test Starter</h1>
-              <p className="text-sm text-slate-600">Responsive no-SSR base with your required libraries.</p>
+              <h1 className="mb-1 text-xl font-semibold sm:text-2xl">Dashboard</h1>
+              <p className="text-sm text-slate-600">Kiddle Pass em números. Dados gerais de uso da plataforma.</p>
             </div>
           </div>
         </Card>
