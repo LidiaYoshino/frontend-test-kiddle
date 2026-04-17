@@ -32,13 +32,19 @@ export interface AppointmentChild {
   id: string;
   nome: string;
   responsavel: string;
+  nascimento: string;
+  observation: string;
+  hasDeficiency: boolean;
+  needsInterpreter: boolean;
 }
 
 export interface DayAppointment {
   id: string;
   atividade: string;
   parceiro: string;
+  data: string;
   horario: string;
+  link: string;
   criancas: AppointmentChild[];
   grade: {
     dia: string;

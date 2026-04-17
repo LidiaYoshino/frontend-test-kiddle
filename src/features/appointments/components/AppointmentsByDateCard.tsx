@@ -2,11 +2,15 @@ import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Card } from "../../../components/ui/Card";
 import { ErrorMessage } from "../../../components/ui/ErrorMessage";
 import { Loading } from "../../../components/ui/Loading";
+import type { DayAppointment } from "../../../types/api";
 import { useAppointmentsByDate } from "../hooks/useAppointmentsByDate";
 import { sortAppointmentsByTime, sortedUnique } from "../lib/appointments";
+import { collectDayWarnings } from "../lib/dayWarnings";
 import { REFERENCE_TODAY, formatDateForApi, getDateByPreset, type DateMode, type DatePreset } from "../lib/dates";
+import { AppointmentDetailsModal } from "./AppointmentDetailsModal";
 import { AppointmentListItem } from "./AppointmentListItem";
 import { AppointmentsFilters } from "./AppointmentsFilters";
+import { DayWarningsModal } from "./DayWarningsModal";
 
 export function AppointmentsByDateCard() {
   const [dateMode, setDateMode] = useState<DateMode>("today");
@@ -14,6 +18,8 @@ export function AppointmentsByDateCard() {
   const [activityFilter, setActivityFilter] = useState("");
   const [partnerFilter, setPartnerFilter] = useState("");
   const [userFilter, setUserFilter] = useState("");
+  const [selectedAppointment, setSelectedAppointment] = useState<DayAppointment | null>(null);
+  const [dayWarningsOpen, setDayWarningsOpen] = useState(false);
 
   const requestedDate = useMemo(() => {
     if (dateMode === "custom") {
@@ -27,6 +33,7 @@ export function AppointmentsByDateCard() {
 
   const { data, isLoading, error } = useAppointmentsByDate(requestedDateLabel);
   const appointments = useMemo(() => sortAppointmentsByTime(data), [data]);
+  const dayWarningCount = useMemo(() => collectDayWarnings(appointments).length, [appointments]);
 
   const activityOptions = useMemo(
     () => sortedUnique(appointments.map((appointment) => appointment.atividade)),
@@ -81,8 +88,28 @@ export function AppointmentsByDateCard() {
 
   return (
     <Card>
-      <h2 className="mb-1 text-sm font-medium uppercase tracking-wide text-slate-500">Agendamentos do dia</h2>
-      <p className="mb-6 text-sm text-slate-600">Lista de atividades e horarios para {requestedDateLabel}, com filtros.</p>
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 className="mb-1 text-sm font-medium uppercase tracking-wide text-slate-500">Agendamentos do dia</h2>
+          <p className="text-sm text-slate-600">Lista de atividades e horarios para {requestedDateLabel}, com filtros.</p>
+        </div>
+        {!isLoading && !error && appointments.length > 0 ? (
+          <button
+            type="button"
+            onClick={() => setDayWarningsOpen(true)}
+            aria-expanded={dayWarningsOpen}
+            aria-haspopup="dialog"
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            Avisos do dia
+            {dayWarningCount > 0 ? (
+              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
+                {dayWarningCount}
+              </span>
+            ) : null}
+          </button>
+        ) : null}
+      </div>
 
       <AppointmentsFilters
         dateMode={dateMode}
@@ -112,7 +139,7 @@ export function AppointmentsByDateCard() {
 
       {isLoading ? (
         <div className="flex min-h-[320px] items-center justify-center">
-          <Loading message="Loading initial response..." size="lg" />
+          <Loading message="Carregando agendamentos..." size="lg" />
         </div>
       ) : error ? (
         <ErrorMessage message="Erro ao buscar agendamentos da data" />
@@ -123,10 +150,18 @@ export function AppointmentsByDateCard() {
       ) : (
         <div className={`space-y-3 transition-opacity ${isFiltering ? "opacity-60" : "opacity-100"}`}>
           {filteredAppointments.map((appointment) => (
-            <AppointmentListItem key={appointment.id} appointment={appointment} />
+            <AppointmentListItem key={appointment.id} appointment={appointment} onSelect={setSelectedAppointment} />
           ))}
         </div>
       )}
+
+      <AppointmentDetailsModal appointment={selectedAppointment} onClose={() => setSelectedAppointment(null)} />
+      <DayWarningsModal
+        open={dayWarningsOpen}
+        onClose={() => setDayWarningsOpen(false)}
+        appointments={appointments}
+        dateLabel={requestedDateLabel}
+      />
     </Card>
   );
 }

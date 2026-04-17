@@ -41,7 +41,7 @@ export function AppointmentsPerformance() {
     <p className="mb-6 text-sm text-slate-600">Agendamenos ao longo dos meses (agendamentos x mês/ano)</p>
     {isLoading ? (
       <div className="flex min-h-[320px] items-center justify-center">
-        <Loading message="Loading initial response..." size="lg" />
+        <Loading message="Carregando..." size="lg" />
       </div>
     ) : error ? (
       <ErrorMessage message={'Erro ao buscar agendamentos'} />
