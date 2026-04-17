@@ -3,8 +3,7 @@ import { Container } from "../components/layout/Container";
 import { AppDesktopSidebar } from "../components/menu/AppDesktopSidebar";
 import { AppMobileHeader } from "../components/menu/AppMobileHeader";
 import { AppMobileNavSheet } from "../components/menu/AppMobileNavSheet";
-import { MD_BREAKPOINT_PX, MIN_WIDTH_QUERY } from "../constants/styles";
-import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useBreakpointUp } from "../hooks/useMediaQuery";
 import { APP_NAV_ITEMS } from "./navigation";
 
 interface AppShellProps {
@@ -13,7 +12,7 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isMd = useMediaQuery(MIN_WIDTH_QUERY(MD_BREAKPOINT_PX));
+  const isMd = useBreakpointUp("md");
 
   useEffect(() => {
     // Close the mobile menu if the screen becames larger than the medium breakpoint (Portal ignores md:hidden)
