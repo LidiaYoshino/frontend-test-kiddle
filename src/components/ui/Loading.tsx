@@ -1,7 +1,7 @@
 interface LoadingProps {
   message?: string;
   className?: string;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
 }
 
 const sizeClasses = {
@@ -12,6 +12,10 @@ const sizeClasses = {
   md: {
     container: "gap-2 text-sm",
     spinner: "h-4 w-4 border-2"
+  },
+  lg: {
+    container: "gap-3 text-base",
+    spinner: "h-5 w-5 border-2"
   }
 };
 

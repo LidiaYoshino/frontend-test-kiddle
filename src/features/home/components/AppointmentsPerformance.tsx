@@ -5,6 +5,7 @@ import { Loading } from "../../../components/ui/Loading";
 import { getErrorMessage } from "../../../lib/api/client";
 import type { AppointmentsPerformanceResponse } from "../../../types/api";
 import { getAppointmentsPerformance } from "../api/getAppointmentsPerformance";
+import { AppointmentsPerformanceChart } from "./AppointmentsPerformanceChart";
 
 export function AppointmentsPerformance() {
   const [payload, setPayload] = useState<AppointmentsPerformanceResponse | null>(null);
@@ -36,13 +37,18 @@ export function AppointmentsPerformance() {
   }, [fetchAppointmentsPerformance]);
 
   return (<Card>
-    <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-500">Appointments Performance Response</h2>
-    {error ? (
-      <ErrorMessage message={error} />
-    ) : isLoading ? (
-      <Loading message="Loading initial response..." />
+    <h2 className="mb-1 text-sm font-medium uppercase tracking-wide text-slate-500">Agendamentos do período</h2>
+    <p className="mb-6 text-sm text-slate-600">Agendamenos ao longo dos meses (agendamentos x mês/ano)</p>
+    {isLoading ? (
+      <div className="flex min-h-[320px] items-center justify-center">
+        <Loading message="Loading initial response..." size="lg" />
+      </div>
+    ) : error ? (
+      <ErrorMessage message={'Erro ao buscar agendamentos'} />
+    ) : !payload || Object.keys(payload).length === 0 ? (
+      <ErrorMessage message={'Agendamentos não encontrados'} />
     ) : (
-      <p className="break-all rounded-lg bg-slate-100 p-3 text-sm text-slate-800">{JSON.stringify(payload)}</p>
+      <AppointmentsPerformanceChart data={payload} />
     )}
   </Card>);
 }
