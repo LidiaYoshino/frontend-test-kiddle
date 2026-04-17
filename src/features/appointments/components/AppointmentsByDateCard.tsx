@@ -1,116 +1,129 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Card } from "../../../components/ui/Card";
 import { ErrorMessage } from "../../../components/ui/ErrorMessage";
 import { Loading } from "../../../components/ui/Loading";
-import { getErrorMessage } from "../../../lib/api/client";
-import type { DayAppointment } from "../../../types/api";
-import { getAppointmentsByDate } from "../api/getAppointmentsByDate";
-
-const FIXED_APPOINTMENTS_DATE = "9/3/2026";
-
-function normalizeAppointments(appointments: DayAppointment[]): DayAppointment[] {
-  return appointments
-    .filter((appointment) => appointment.atividade && appointment.horario)
-    .sort((left, right) => {
-      const byHour = left.horario.localeCompare(right.horario, "pt-BR");
-      if (byHour !== 0) {
-        return byHour;
-      }
-
-      return left.atividade.localeCompare(right.atividade, "pt-BR");
-    });
-}
-
-function getTotalSpots(appointment: DayAppointment): number | null {
-  const [start, end] = appointment.horario.split("-");
-  if (!start || !end) {
-    return null;
-  }
-
-  for (const daySchedule of appointment.grade) {
-    const timeSlot = daySchedule.horarios.find(
-      (slot) => slot.horarioInicio === start.trim() && slot.horarioTermino === end.trim()
-    );
-    if (timeSlot) {
-      return timeSlot.vagas;
-    }
-  }
-
-  return null;
-}
-
-function getSpotsLeftLabel(appointment: DayAppointment): string {
-  const totalSpots = getTotalSpots(appointment);
-  if (totalSpots === null) {
-    return "Vagas restantes: --";
-  }
-
-  const spotsLeft = Math.max(totalSpots - appointment.criancas.length, 0);
-  return `Vagas restantes: ${spotsLeft}`;
-}
+import { useAppointmentsByDate } from "../hooks/useAppointmentsByDate";
+import { sortAppointmentsByTime, sortedUnique } from "../lib/appointments";
+import { REFERENCE_TODAY, formatDateForApi, getDateByPreset, type DateMode, type DatePreset } from "../lib/dates";
+import { AppointmentListItem } from "./AppointmentListItem";
+import { AppointmentsFilters } from "./AppointmentsFilters";
 
 export function AppointmentsByDateCard() {
-  const [payload, setPayload] = useState<DayAppointment[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const hasFetchedOnMount = useRef(false);
+  const [dateMode, setDateMode] = useState<DateMode>("today");
+  const [customDate, setCustomDate] = useState<Date | null>(null);
+  const [activityFilter, setActivityFilter] = useState("");
+  const [partnerFilter, setPartnerFilter] = useState("");
+  const [userFilter, setUserFilter] = useState("");
 
-  const fetchAppointments = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const data = await getAppointmentsByDate(FIXED_APPOINTMENTS_DATE);
-      setPayload(data.appointments ?? []);
-    } catch (requestError) {
-      setError(getErrorMessage(requestError));
-    } finally {
-      setIsLoading(false);
+  const requestedDate = useMemo(() => {
+    if (dateMode === "custom") {
+      return customDate ?? REFERENCE_TODAY;
     }
-  }, []);
+
+    return getDateByPreset(dateMode);
+  }, [customDate, dateMode]);
+
+  const requestedDateLabel = useMemo(() => formatDateForApi(requestedDate), [requestedDate]);
+
+  const { data, isLoading, error } = useAppointmentsByDate(requestedDateLabel);
+  const appointments = useMemo(() => sortAppointmentsByTime(data), [data]);
+
+  const activityOptions = useMemo(
+    () => sortedUnique(appointments.map((appointment) => appointment.atividade)),
+    [appointments]
+  );
+  const partnerOptions = useMemo(
+    () => sortedUnique(appointments.map((appointment) => appointment.parceiro)),
+    [appointments]
+  );
+  const userOptions = useMemo(
+    () => sortedUnique(appointments.flatMap((appointment) => appointment.criancas.map((child) => child.responsavel))),
+    [appointments]
+  );
 
   useEffect(() => {
-    if (hasFetchedOnMount.current) {
-      return;
+    if (activityFilter && !activityOptions.includes(activityFilter)) {
+      setActivityFilter("");
     }
+    if (partnerFilter && !partnerOptions.includes(partnerFilter)) {
+      setPartnerFilter("");
+    }
+    if (userFilter && !userOptions.includes(userFilter)) {
+      setUserFilter("");
+    }
+  }, [activityFilter, activityOptions, partnerFilter, partnerOptions, userFilter, userOptions]);
 
-    hasFetchedOnMount.current = true;
-    void fetchAppointments();
-  }, [fetchAppointments]);
+  const deferredActivity = useDeferredValue(activityFilter);
+  const deferredPartner = useDeferredValue(partnerFilter);
+  const deferredUser = useDeferredValue(userFilter);
+  const isFiltering =
+    deferredActivity !== activityFilter || deferredPartner !== partnerFilter || deferredUser !== userFilter;
 
-  const normalizedAppointments = useMemo(() => normalizeAppointments(payload), [payload]);
+  const filteredAppointments = useMemo(() => {
+    return appointments.filter((appointment) => {
+      if (deferredActivity && appointment.atividade !== deferredActivity) {
+        return false;
+      }
+      if (deferredPartner && appointment.parceiro !== deferredPartner) {
+        return false;
+      }
+      if (deferredUser && !appointment.criancas.some((child) => child.responsavel === deferredUser)) {
+        return false;
+      }
+      return true;
+    });
+  }, [appointments, deferredActivity, deferredPartner, deferredUser]);
+
+  const handleCustomDateChange = (date: Date) => {
+    setCustomDate(date);
+    setDateMode("custom");
+  };
 
   return (
     <Card>
       <h2 className="mb-1 text-sm font-medium uppercase tracking-wide text-slate-500">Agendamentos do dia</h2>
-      <p className="mb-6 text-sm text-slate-600">
-        Lista de atividades e horarios para {FIXED_APPOINTMENTS_DATE}, incluindo turmas sem agendamento.
-      </p>
+      <p className="mb-6 text-sm text-slate-600">Lista de atividades e horarios para {requestedDateLabel}, com filtros.</p>
+
+      <AppointmentsFilters
+        dateMode={dateMode}
+        onPresetSelect={(preset: DatePreset) => setDateMode(preset)}
+        customDate={customDate}
+        onCustomDateChange={handleCustomDateChange}
+        isFiltering={isFiltering}
+        activity={{
+          value: activityFilter,
+          onChange: setActivityFilter,
+          options: activityOptions,
+          allLabel: "Todas as atividades"
+        }}
+        partner={{
+          value: partnerFilter,
+          onChange: setPartnerFilter,
+          options: partnerOptions,
+          allLabel: "Todos os parceiros"
+        }}
+        user={{
+          value: userFilter,
+          onChange: setUserFilter,
+          options: userOptions,
+          allLabel: "Todos os usuários"
+        }}
+      />
+
       {isLoading ? (
         <div className="flex min-h-[320px] items-center justify-center">
           <Loading message="Loading initial response..." size="lg" />
         </div>
       ) : error ? (
         <ErrorMessage message="Erro ao buscar agendamentos da data" />
-      ) : normalizedAppointments.length === 0 ? (
+      ) : appointments.length === 0 ? (
         <ErrorMessage message="Nenhum agendamento encontrado para a data selecionada" />
+      ) : filteredAppointments.length === 0 ? (
+        <ErrorMessage message="Nenhum agendamento encontrado para os filtros aplicados" />
       ) : (
-        <div className="space-y-3">
-          {normalizedAppointments.map((appointment) => (
-            <div key={appointment.id} className="rounded-lg border border-slate-200 p-3">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-sm font-semibold text-slate-800">{appointment.atividade}</p>
-                <span className="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">{appointment.horario}</span>
-              </div>
-              <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-600">
-                <span className="rounded bg-blue-50 px-2 py-1 font-medium text-blue-700">
-                  {appointment.criancas.length} agendamento(s)
-                </span>
-                <span className="rounded bg-emerald-50 px-2 py-1 font-medium text-emerald-700">
-                  {getSpotsLeftLabel(appointment)}
-                </span>
-              </div>
-            </div>
+        <div className={`space-y-3 transition-opacity ${isFiltering ? "opacity-60" : "opacity-100"}`}>
+          {filteredAppointments.map((appointment) => (
+            <AppointmentListItem key={appointment.id} appointment={appointment} />
           ))}
         </div>
       )}

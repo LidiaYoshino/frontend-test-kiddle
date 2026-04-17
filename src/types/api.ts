@@ -37,6 +37,7 @@ export interface AppointmentChild {
 export interface DayAppointment {
   id: string;
   atividade: string;
+  parceiro: string;
   horario: string;
   criancas: AppointmentChild[];
   grade: {
