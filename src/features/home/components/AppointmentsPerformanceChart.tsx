@@ -5,6 +5,7 @@ import {
   Legend,
   LineElement,
   LinearScale,
+  type Point,
   PointElement,
   type Plugin,
   Tooltip
@@ -12,6 +13,7 @@ import {
 import { ptBR } from "date-fns/locale";
 import { format, subMonths } from "date-fns";
 import { Chart } from "react-chartjs-2";
+import { useBreakpointBucket } from "../../../hooks/useMediaQuery";
 import type { AppointmentsPerformanceResponse } from "../../../types/api";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Tooltip, Legend);
@@ -26,6 +28,8 @@ function getMonthLabel(monthsAgo: number): string {
 }
 
 export function AppointmentsPerformanceChart({ data }: AppointmentsPerformanceChartProps) {
+  const breakpointBucket = useBreakpointBucket();
+
   const orderedEntries = Object.entries(data)
     .map(([key, value]) => ({
       monthsAgo: Number(key),
@@ -62,9 +66,14 @@ export function AppointmentsPerformanceChart({ data }: AppointmentsPerformanceCh
         return;
       }
 
-      const previousTickCenter = xScale.getPixelForTick(yearTransitionIndex - 1);
-      const currentTickCenter = xScale.getPixelForTick(yearTransitionIndex);
-      const x = (previousTickCenter + currentTickCenter) / 2;
+      const barMeta = chart.getDatasetMeta(0);
+      const previousPoint = barMeta.data[yearTransitionIndex - 1] as Point | undefined;
+      const currentPoint = barMeta.data[yearTransitionIndex] as Point | undefined;
+      if (!previousPoint || !currentPoint || previousPoint.x === null || currentPoint.x === null) {
+        return;
+      }
+
+      const x = (previousPoint.x + currentPoint.x) / 2;
       const previousYear = orderedEntries[yearTransitionIndex - 1]?.monthDate.getFullYear();
       const transitionYear = orderedEntries[yearTransitionIndex]?.monthDate.getFullYear();
       if (!transitionYear || !previousYear) {
@@ -94,17 +103,22 @@ export function AppointmentsPerformanceChart({ data }: AppointmentsPerformanceCh
       const labelY = yScale.top + 6;
       const minX = xScale.left + 2;
       const maxX = xScale.right - 2;
+      const hasRoomForBothLabels = maxX - minX > previousLabelWidth + nextLabelWidth + labelGap * 3;
       const previousLabelX = Math.max(minX, x - labelGap - previousLabelWidth);
       const nextLabelX = Math.min(maxX - nextLabelWidth, x + labelGap);
 
       context.setLineDash([]);
       context.fillStyle = "rgba(100, 116, 139, 0.16)";
-      context.fillRect(previousLabelX, labelY, previousLabelWidth, labelHeight);
+      if (hasRoomForBothLabels) {
+        context.fillRect(previousLabelX, labelY, previousLabelWidth, labelHeight);
+      }
       context.fillRect(nextLabelX, labelY, nextLabelWidth, labelHeight);
       context.fillStyle = "rgba(71, 85, 105, 0.95)";
       context.textAlign = "left";
       context.textBaseline = "middle";
-      context.fillText(previousYearText, previousLabelX + labelPaddingX, labelY + labelHeight / 2);
+      if (hasRoomForBothLabels) {
+        context.fillText(previousYearText, previousLabelX + labelPaddingX, labelY + labelHeight / 2);
+      }
       context.fillText(nextYearText, nextLabelX + labelPaddingX, labelY + labelHeight / 2);
       context.restore();
     }
@@ -184,7 +198,7 @@ export function AppointmentsPerformanceChart({ data }: AppointmentsPerformanceCh
 
   return (
     <div className="h-72">
-      <Chart type="bar" data={chartData} options={chartOptions} plugins={[yearTransitionPlugin]} />
+      <Chart key={breakpointBucket} type="bar" data={chartData} options={chartOptions} plugins={[yearTransitionPlugin]} />
     </div>
   );
 }
