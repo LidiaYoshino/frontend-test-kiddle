@@ -27,3 +27,28 @@ export interface UsersKidsAgeDistribution {
 export interface UsersKidsAgeResponse {
   age: UsersKidsAgeDistribution;
 }
+
+export interface AppointmentChild {
+  id: string;
+  nome: string;
+  responsavel: string;
+}
+
+export interface DayAppointment {
+  id: string;
+  atividade: string;
+  horario: string;
+  criancas: AppointmentChild[];
+  grade: {
+    dia: string;
+    horarios: {
+      horarioInicio: string;
+      horarioTermino: string;
+      vagas: number;
+    }[];
+  }[];
+}
+
+export interface AppointmentsByDateResponse {
+  appointments: DayAppointment[];
+}
