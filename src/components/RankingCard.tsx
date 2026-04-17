@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Card } from "../../../components/ui/Card";
-import { ErrorMessage } from "../../../components/ui/ErrorMessage";
-import { Loading } from "../../../components/ui/Loading";
-import { getErrorMessage } from "../../../lib/api/client";
+import { getErrorMessage } from "../lib/api/client";
+import { Card } from "./ui/Card";
+import { ErrorMessage } from "./ui/ErrorMessage";
+import { Loading } from "./ui/Loading";
 
 interface RankingCardProps {
   title: string;

@@ -1,5 +1,5 @@
 import { getViewsRanking } from "../api/getViewsRanking";
-import { RankingCard } from "./RankingCard";
+import { RankingCard } from "../../../components/RankingCard";
 
 export function ViewsRanking() {
   return (

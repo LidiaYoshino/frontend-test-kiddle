@@ -4,6 +4,7 @@ import { Stack } from "../../components/layout/Stack";
 import { Card } from "../../components/ui/Card";
 import { AppointmentsPerformance } from "./components/AppointmentsPerformance";
 import { AppointmentsRanking } from "./components/AppointmentsRanking";
+import { UsersKidsAgeDistribution } from "./components/UsersKidsAgeDistribution";
 import { UsersSoDistribution } from "./components/UsersSoDistribution";
 import { ViewsRanking } from "./components/ViewsRanking";
 
@@ -23,6 +24,7 @@ export function Dashboard() {
         <AppointmentsRanking />
         <ViewsRanking />
         <UsersSoDistribution />
+        <UsersKidsAgeDistribution />
         <ResponsiveGrid>
           <Card>
             <h2 className="mb-2 text-sm font-medium uppercase tracking-wide text-slate-500">Total Widgets</h2>

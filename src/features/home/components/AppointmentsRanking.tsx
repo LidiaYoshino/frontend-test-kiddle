@@ -1,5 +1,5 @@
 import { getAppointmentsRanking } from "../api/getAppointmentsRanking";
-import { RankingCard } from "./RankingCard";
+import { RankingCard } from "../../../components/RankingCard";
 
 export function AppointmentsRanking() {
   return (

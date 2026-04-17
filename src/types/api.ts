@@ -19,3 +19,11 @@ export interface UsersSoResponse {
 export interface UsersSoDistribution {
   [osName: string]: number;
 }
+
+export interface UsersKidsAgeDistribution {
+  [ageRange: string]: number;
+}
+
+export interface UsersKidsAgeResponse {
+  age: UsersKidsAgeDistribution;
+}
