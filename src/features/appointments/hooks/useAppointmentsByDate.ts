@@ -7,6 +7,7 @@ interface UseAppointmentsByDateResult {
   data: DayAppointment[];
   isLoading: boolean;
   error: string | null;
+  refetch: () => Promise<void>;
 }
 
 export function useAppointmentsByDate(date: string): UseAppointmentsByDateResult {
@@ -32,5 +33,5 @@ export function useAppointmentsByDate(date: string): UseAppointmentsByDateResult
     void fetchData();
   }, [fetchData]);
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch: fetchData };
 }

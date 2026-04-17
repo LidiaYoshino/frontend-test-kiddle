@@ -1,4 +1,4 @@
-import { addDays, format, parseISO } from "date-fns";
+import { addDays, format, parse, parseISO } from "date-fns";
 
 export const REFERENCE_TODAY = parseISO("2026-03-09");
 
@@ -23,4 +23,9 @@ export function getDateByPreset(preset: DatePreset): Date {
 
 export function formatDateForApi(date: Date): string {
   return format(date, "d/M/yyyy");
+}
+
+export function parseApiDateString(label: string): Date {
+  const parsed = parse(label, "d/M/yyyy", new Date());
+  return Number.isNaN(parsed.getTime()) ? REFERENCE_TODAY : parsed;
 }

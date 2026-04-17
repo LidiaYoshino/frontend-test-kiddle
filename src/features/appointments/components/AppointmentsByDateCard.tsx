@@ -10,6 +10,7 @@ import { REFERENCE_TODAY, formatDateForApi, getDateByPreset, type DateMode, type
 import { AppointmentDetailsModal } from "./AppointmentDetailsModal";
 import { AppointmentListItem } from "./AppointmentListItem";
 import { AppointmentsFilters } from "./AppointmentsFilters";
+import { CreateAppointmentModal } from "./CreateAppointmentModal";
 import { DayWarningsModal } from "./DayWarningsModal";
 
 export function AppointmentsByDateCard() {
@@ -20,6 +21,7 @@ export function AppointmentsByDateCard() {
   const [userFilter, setUserFilter] = useState("");
   const [selectedAppointment, setSelectedAppointment] = useState<DayAppointment | null>(null);
   const [dayWarningsOpen, setDayWarningsOpen] = useState(false);
+  const [createAppointmentOpen, setCreateAppointmentOpen] = useState(false);
 
   const requestedDate = useMemo(() => {
     if (dateMode === "custom") {
@@ -31,7 +33,7 @@ export function AppointmentsByDateCard() {
 
   const requestedDateLabel = useMemo(() => formatDateForApi(requestedDate), [requestedDate]);
 
-  const { data, isLoading, error } = useAppointmentsByDate(requestedDateLabel);
+  const { data, isLoading, error, refetch } = useAppointmentsByDate(requestedDateLabel);
   const appointments = useMemo(() => sortAppointmentsByTime(data), [data]);
   const dayWarningCount = useMemo(() => collectDayWarnings(appointments).length, [appointments]);
 
@@ -93,22 +95,35 @@ export function AppointmentsByDateCard() {
           <h2 className="mb-1 text-sm font-medium uppercase tracking-wide text-slate-500">Agendamentos do dia</h2>
           <p className="text-sm text-slate-600">Lista de atividades e horarios para {requestedDateLabel}, com filtros.</p>
         </div>
-        {!isLoading && !error && appointments.length > 0 ? (
+        <div className="flex w-full shrink-0 flex-col items-stretch gap-2 sm:ml-auto sm:w-auto sm:items-end">
           <button
             type="button"
             onClick={() => setDayWarningsOpen(true)}
             aria-expanded={dayWarningsOpen}
             aria-haspopup="dialog"
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             Avisos do dia
-            {dayWarningCount > 0 ? (
-              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
-                {dayWarningCount}
-              </span>
-            ) : null}
+            <span className="inline-flex min-h-[1.25rem] min-w-[1.25rem] items-center justify-center rounded-full bg-amber-100 px-2 py-0.5">
+              {isLoading ? (
+                <span
+                  className="inline-block h-3 w-3 animate-spin rounded-full border-[1.5px] border-amber-300 border-t-amber-800"
+                  aria-label="Carregando contagem de avisos"
+                />
+              ) : (
+                <span className="text-xs font-semibold tabular-nums text-amber-800">{dayWarningCount}</span>
+              )}
+            </span>
           </button>
-        ) : null}
+          <button
+            type="button"
+            onClick={() => setCreateAppointmentOpen(true)}
+            aria-haspopup="dialog"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+          >
+            Novo agendamento
+          </button>
+        </div>
       </div>
 
       <AppointmentsFilters
@@ -161,6 +176,12 @@ export function AppointmentsByDateCard() {
         onClose={() => setDayWarningsOpen(false)}
         appointments={appointments}
         dateLabel={requestedDateLabel}
+      />
+      <CreateAppointmentModal
+        open={createAppointmentOpen}
+        onClose={() => setCreateAppointmentOpen(false)}
+        dateLabel={requestedDateLabel}
+        onCreated={() => void refetch()}
       />
     </Card>
   );

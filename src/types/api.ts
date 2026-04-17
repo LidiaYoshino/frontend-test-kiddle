@@ -59,3 +59,45 @@ export interface DayAppointment {
 export interface AppointmentsByDateResponse {
   appointments: DayAppointment[];
 }
+
+export interface SubscriberKid {
+  id: string;
+  name: string;
+  birthDate: string;
+}
+
+export interface ActiveSubscriber {
+  id: string;
+  nome: string;
+  email: string;
+  celular: string;
+  engagementStatus: string;
+  kids: SubscriberKid[];
+}
+
+export interface ActiveSubscribersResponse {
+  list: ActiveSubscriber[];
+}
+
+export interface SchedulableActivityGradeSlot {
+  horarioInicio: string;
+  horarioTermino: string;
+  vagas: number;
+}
+
+export interface SchedulableActivityGradeDay {
+  dia: string;
+  horarios: SchedulableActivityGradeSlot[];
+}
+
+export interface SchedulableActivity {
+  id: string;
+  nome: string;
+  minima: number;
+  maxima: number;
+  grade: SchedulableActivityGradeDay[];
+}
+
+export interface SchedulableActivitiesResponse {
+  list: SchedulableActivity[];
+}
