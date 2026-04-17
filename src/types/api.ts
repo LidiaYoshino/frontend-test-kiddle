@@ -5,3 +5,5 @@ export interface ApiStatusResponse {
 export interface AppointmentsPerformanceResponse {
   [monthsAgo: string]: number;
 }
+
+export type AppointmentsRankingResponse = string[];

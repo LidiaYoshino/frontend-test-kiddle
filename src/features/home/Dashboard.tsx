@@ -3,6 +3,7 @@ import { Section } from "../../components/layout/Section";
 import { Stack } from "../../components/layout/Stack";
 import { Card } from "../../components/ui/Card";
 import { AppointmentsPerformance } from "./components/AppointmentsPerformance";
+import { AppointmentsRanking } from "./components/AppointmentsRanking";
 
 export function Dashboard() {
   return (
@@ -17,6 +18,7 @@ export function Dashboard() {
           </div>
         </Card>
         <AppointmentsPerformance />
+        <AppointmentsRanking />
         <ResponsiveGrid>
           <Card>
             <h2 className="mb-2 text-sm font-medium uppercase tracking-wide text-slate-500">Total Widgets</h2>
