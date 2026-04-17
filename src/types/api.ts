@@ -9,3 +9,13 @@ export interface AppointmentsPerformanceResponse {
 export type AppointmentsRankingResponse = string[];
 
 export type ViewsRankingResponse = string[];
+
+export interface UsersSoResponse {
+  operatingSystems: {
+    [osName: string]: number;
+  };
+}
+
+export interface UsersSoDistribution {
+  [osName: string]: number;
+}
