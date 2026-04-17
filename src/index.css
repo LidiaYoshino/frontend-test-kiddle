@@ -60,6 +60,28 @@ body {
   }
 }
 
+@keyframes modal-content-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes modal-content-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+}
+
 @layer components {
   .sheet-overlay {
     animation-duration: 300ms;
@@ -88,5 +110,34 @@ body {
 
   .sheet-panel[data-state="closed"] {
     animation-name: sheet-slide-out-right;
+  }
+
+  .modal-overlay {
+    animation-duration: 300ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  .modal-overlay[data-state="open"] {
+    animation-name: sheet-overlay-in;
+  }
+
+  .modal-overlay[data-state="closed"] {
+    animation-name: sheet-overlay-out;
+  }
+
+  .modal-panel {
+    animation-duration: 300ms;
+    animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+    animation-fill-mode: forwards;
+    will-change: transform, opacity;
+  }
+
+  .modal-panel[data-state="open"] {
+    animation-name: modal-content-in;
+  }
+
+  .modal-panel[data-state="closed"] {
+    animation-name: modal-content-out;
   }
 }

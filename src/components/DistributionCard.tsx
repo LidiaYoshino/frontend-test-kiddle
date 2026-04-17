@@ -169,7 +169,7 @@ export function DistributionCard({
       </div>
       {isLoading ? (
         <div className="flex min-h-[210px] items-center justify-center">
-          <Loading message="Loading initial response..." size="lg" />
+          <Loading message="Carregando..." size="lg" />
         </div>
       ) : error ? (
         <ErrorMessage message={loadErrorMessage} />

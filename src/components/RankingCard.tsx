@@ -62,7 +62,7 @@ export function RankingCard({ title, description, loadErrorMessage, emptyMessage
       <p className="mb-6 text-sm text-slate-600">{description}</p>
       {isLoading ? (
         <div className="flex min-h-[170px] items-center justify-center">
-          <Loading message="Loading initial response..." size="lg" />
+          <Loading message="Carregando..." size="lg" />
         </div>
       ) : error ? (
         <ErrorMessage message={loadErrorMessage} />
