@@ -7,3 +7,5 @@ export interface AppointmentsPerformanceResponse {
 }
 
 export type AppointmentsRankingResponse = string[];
+
+export type ViewsRankingResponse = string[];
