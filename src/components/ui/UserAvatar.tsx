@@ -13,9 +13,9 @@ export function UserAvatar({ name }: UserAvatarProps) {
     .slice(0, 2);
 
   return (
-    <Avatar.Root className="inline-flex h-10 w-10 select-none items-center justify-center overflow-hidden rounded-full bg-brand-100 align-middle">
+    <Avatar.Root className="inline-flex h-10 w-10 select-none items-center justify-center overflow-hidden rounded-full bg-brand1-100 align-middle">
       <Avatar.Image className="h-full w-full object-cover" src="" alt={name} />
-      <Avatar.Fallback className="text-sm font-semibold text-brand-700" delayMs={300}>
+      <Avatar.Fallback className="text-sm font-semibold text-brand1-700" delayMs={300}>
         {initials}
       </Avatar.Fallback>
     </Avatar.Root>

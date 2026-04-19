@@ -405,7 +405,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
             <button
               type="submit"
               disabled={isSubmitting || !formComplete}
-              className="inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex items-center gap-2 rounded-lg bg-brand1-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand1-600 disabled:cursor-not-allowed disabled:opacity-70"
             >
               <Plus className="h-4 w-4" aria-hidden="true" />
               {isSubmitting ? "Salvando..." : "Salvar agendamento"}

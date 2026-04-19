@@ -119,7 +119,7 @@ export function AppointmentsByDateCard() {
             type="button"
             onClick={() => setCreateAppointmentOpen(true)}
             aria-haspopup="dialog"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand1-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand1-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand1-600 focus-visible:ring-offset-2"
           >
             Novo agendamento
           </button>
