@@ -28,7 +28,7 @@ export function AppShell({ children }: AppShellProps) {
         onMenuToggle={() => setIsMobileMenuOpen((previous) => !previous)}
       />
       <AppMobileNavSheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen} items={APP_NAV_ITEMS} />
-      <Container className="pb-4 pt-16 sm:pb-6 md:py-6">
+      <Container className="pb-4 pt-[76px] sm:pb-6 md:py-6">
         <div className="grid gap-4 md:grid-cols-[220px_1fr] md:gap-6">
           <AppDesktopSidebar items={APP_NAV_ITEMS} />
           <main>{children}</main>
