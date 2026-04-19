@@ -71,7 +71,7 @@ export function DatePicker({
             id={id}
             type="button"
             disabled={triggerDisabled}
-            className={`${triggerClassName ?? DEFAULT_TRIGGER_CLASS} disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-brand-yellow-100 disabled:text-slate-400`}
+            className={`${triggerClassName ?? DEFAULT_TRIGGER_CLASS} disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-brand-yellow-75 disabled:text-slate-400`}
           >
             <span>{formattedValue || placeholder}</span>
             <CalendarIcon className="h-4 w-4" aria-hidden="true" />

@@ -5,6 +5,7 @@ import { DatePicker } from "../../../components/ui/DatePicker";
 import { ErrorMessage } from "../../../components/ui/ErrorMessage";
 import { Loading } from "../../../components/ui/Loading";
 import { Modal, ModalContent, ModalDescription, ModalTitle } from "../../../components/ui/Modal";
+import { Select } from "../../../components/ui/Select";
 import { getErrorMessage } from "../../../lib/api/client";
 import type { ActiveSubscriber, SchedulableActivity } from "../../../types/api";
 import { createAppointment } from "../api/createAppointment";
@@ -16,18 +17,14 @@ import {
   getSchedulableWeekdays,
   isDateOnSchedulableWeekday
 } from "../lib/activitySchedule";
-import { formatDateForApi, parseApiDateString } from "../lib/dates";
+import { formatDateForApi } from "../lib/dates";
 
 interface CreateAppointmentModalProps {
   open: boolean;
   onClose: () => void;
-  dateLabel: string;
   onCreated: () => void;
 }
 
-const inputClass =
-  "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 outline-none ring-brand-teal-500 placeholder:text-slate-400 focus:ring-2";
-const selectClass = `${inputClass} bg-brand-yellow-50`;
 const labelClass = "mb-1 block text-xs font-medium text-slate-600";
 
 function filterSubscribersWithKids(list: ActiveSubscriber[]): ActiveSubscriber[] {
@@ -49,7 +46,7 @@ function sortKidsByName(subscriber: ActiveSubscriber | undefined) {
   return [...subscriber.kids].sort((left, right) => left.name.localeCompare(right.name, "pt-BR"));
 }
 
-export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: CreateAppointmentModalProps) {
+export function CreateAppointmentModal({ open, onClose, onCreated }: CreateAppointmentModalProps) {
   const formId = useId();
 
   const [subscribers, setSubscribers] = useState<ActiveSubscriber[]>([]);
@@ -60,7 +57,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
   const [selectedKidId, setSelectedKidId] = useState("");
   const [selectedActivityId, setSelectedActivityId] = useState("");
 
-  const [formDate, setFormDate] = useState(() => parseApiDateString(dateLabel));
+  const [formDate, setFormDate] = useState<Date | null>(null);
   const [slotIndex, setSlotIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -104,13 +101,13 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
       return;
     }
 
-    setFormDate(parseApiDateString(dateLabel));
+    setFormDate(null);
     setSlotIndex(0);
     setSelectedSubscriberId("");
     setSelectedKidId("");
     setSelectedActivityId("");
     setSubmitError(null);
-  }, [open, dateLabel]);
+  }, [open]);
 
   const sortedSubscribers = useMemo(() => sortSubscribersByName(subscribers), [subscribers]);
   const sortedActivities = useMemo(() => sortActivitiesByName(activities), [activities]);
@@ -131,7 +128,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
   );
 
   const availableSlots = useMemo(() => {
-    if (!selectedActivity) {
+    if (!selectedActivity || !formDate) {
       return [];
     }
     return getAvailableSlotsForActivityOnDate(selectedActivity, formDate);
@@ -202,7 +199,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
       return;
     }
 
-    if (!formDateValid || !selectedSlot) {
+    if (!formDateValid || !selectedSlot || !formDate) {
       setSubmitError("Escolha uma data com horário disponível (com vagas).");
       return;
     }
@@ -281,14 +278,13 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
             <label className={labelClass} htmlFor={`${formId}-subscriber`}>
               Usuário (responsável) <span className="text-red-600">*</span>
             </label>
-            <select
+            <Select
               id={`${formId}-subscriber`}
               name="subscriber"
               value={selectedSubscriberId}
               onChange={(event) => handleSubscriberChange(event.target.value)}
               disabled={!dataReady || !hasUsersWithKids}
               required
-              className={selectClass}
             >
               <option value="">Selecione um usuário</option>
               {sortedSubscribers.map((subscriber) => (
@@ -296,21 +292,20 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
                   {subscriber.nome}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
 
           <div>
             <label className={labelClass} htmlFor={`${formId}-kid`}>
               Criança <span className="text-red-600">*</span>
             </label>
-            <select
+            <Select
               id={`${formId}-kid`}
               name="kid"
               value={selectedKidId}
               onChange={(event) => setSelectedKidId(event.target.value)}
               disabled={!dataReady || !canPickKid}
               required={canPickKid}
-              className={selectClass}
             >
               <option value="">
                 {selectedSubscriber ? "Selecione a criança" : "Selecione um usuário primeiro"}
@@ -320,21 +315,20 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
                   {kid.name} · {kid.birthDate}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
 
           <div>
             <label className={labelClass} htmlFor={`${formId}-activity`}>
               Atividade <span className="text-red-600">*</span>
             </label>
-            <select
+            <Select
               id={`${formId}-activity`}
               name="activity"
               value={selectedActivityId}
               onChange={(event) => handleActivityChange(event.target.value)}
               disabled={!dataReady || !hasActivities}
               required
-              className={selectClass}
             >
               <option value="">Selecione uma atividade</option>
               {sortedActivities.map((activity) => (
@@ -342,7 +336,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
                   {activity.nome.trim()}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
 
           <div>
@@ -352,7 +346,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
               onChange={setFormDate}
               placeholder={selectedActivity ? "Data do agendamento" : "Selecione uma atividade primeiro"}
               disabled={dateDisabledMatcher}
-              defaultMonth={formDate}
+              defaultMonth={formDate ?? undefined}
               remountKey={selectedActivityId || "no-activity"}
               triggerDisabled={!selectedActivity}
             />
@@ -367,7 +361,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
             </span>
             {!selectedActivity ? (
               <p className="text-sm text-slate-500">Selecione uma atividade e uma data para ver o horário.</p>
-            ) : !isDateOnSchedulableWeekday(formDate, activityWeekdays) ? (
+            ) : !formDate || !isDateOnSchedulableWeekday(formDate, activityWeekdays) ? (
               <p className="text-sm text-slate-500">Escolha uma data em que a atividade ocorre.</p>
             ) : availableSlots.length === 0 ? (
               <p className="text-sm text-amber-800">Não há vagas neste dia para esta atividade. Escolha outra data.</p>
@@ -377,19 +371,18 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
                 <span className="text-slate-500"> · {singleAvailableSlot.vagas} vaga(s)</span>
               </p>
             ) : (
-              <select
+              <Select
                 id={`${formId}-horario-slot`}
                 name="horarioSlot"
                 value={resolvedSlotIndex}
                 onChange={(event) => setSlotIndex(Number(event.target.value))}
-                className={selectClass}
               >
                 {availableSlots.map((slot, index) => (
                   <option key={`${slot.horarioInicio}-${slot.horarioTermino}-${index}`} value={index}>
                     {slot.horarioInicio} – {slot.horarioTermino} ({slot.vagas} vaga(s))
                   </option>
                 ))}
-              </select>
+              </Select>
             )}
           </div>
 
@@ -399,7 +392,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-slate-200 bg-brand-yellow-50 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-brand-yellow-75"
+              className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
             >
               Cancelar
             </button>

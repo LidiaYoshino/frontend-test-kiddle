@@ -183,7 +183,6 @@ export function AppointmentsByDateCard() {
       <CreateAppointmentModal
         open={createAppointmentOpen}
         onClose={() => setCreateAppointmentOpen(false)}
-        dateLabel={requestedDateLabel}
         onCreated={() => void refetch()}
       />
     </Card>

@@ -1,6 +1,6 @@
-import { ChevronDown } from "lucide-react";
 import { DatePicker } from "../../../components/ui/DatePicker";
 import { Loading } from "../../../components/ui/Loading";
+import { Select } from "../../../components/ui/Select";
 import { DATE_PRESET_OPTIONS, type DateMode, type DatePreset } from "../lib/dates";
 
 export interface SelectFilter {
@@ -34,27 +34,19 @@ function FilterSelect({ filter }: { filter: SelectFilter }) {
   const isDisabled = options.length === 0;
 
   return (
-    <div className="relative">
-      <select
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        disabled={isDisabled}
-        className="w-full appearance-none rounded-md border border-slate-300 bg-brand-yellow-50 px-3 py-2 pr-9 text-xs text-slate-700 outline-none focus:ring-2 focus:ring-brand-teal-500 disabled:cursor-not-allowed disabled:bg-brand-yellow-75 disabled:text-slate-400"
-      >
-        <option value="">{allLabel}</option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      <ChevronDown
-        aria-hidden
-        className={`pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 ${
-          isDisabled ? "text-slate-400" : "text-slate-500"
-        }`}
-      />
-    </div>
+    <Select
+      uiSize="sm"
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      disabled={isDisabled}
+    >
+      <option value="">{allLabel}</option>
+      {options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </Select>
   );
 }
 
