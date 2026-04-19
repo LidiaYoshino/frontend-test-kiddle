@@ -21,7 +21,7 @@ export function AppointmentListItem({ appointment, onSelect }: AppointmentListIt
     <button
       type="button"
       onClick={() => onSelect(appointment)}
-      className="w-full flex flex-row justify-between rounded-lg border border-slate-200 p-4 pt-3 text-left transition hover:border-brand-yellow-500 hover:bg-brand-yellow-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal-500"
+      className="w-full flex flex-col md:flex-row justify-between rounded-lg border border-slate-200 p-4 pt-3 text-left transition shadow-card hover:border-brand-yellow-500 hover:bg-brand-yellow-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal-500"
     >
       <div className="flex flex-col justify-between gap-2">
         <p className="text-md font-semibold text-slate-800">{appointment.atividade}</p>
@@ -33,8 +33,8 @@ export function AppointmentListItem({ appointment, onSelect }: AppointmentListIt
           <span className="rounded bg-brand-teal-100/80 px-2 py-1 font-medium text-brand-teal-500">{spotsLeftLabel}</span>
         </div>
       </div>
-      <div className="flex flex-col justify-between gap-1.5">
-        <span className="text-sm font-semibold text-slate-800">{appointment.horario}</span>
+      <div className="flex flex-row md:flex-col justify-between gap-1.5 mt-3 md:mt-0">
+        <span className="text-sm font-semibold text-slate-800 self-center">{appointment.horario}</span>
         <div className="flex flex-row gap-1.5 justify-end">
           {hasBirthday ? (
             <WarningDot tone="amber" label="Há aniversariante(s)">
