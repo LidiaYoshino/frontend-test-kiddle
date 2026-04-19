@@ -1,4 +1,5 @@
-import { Rocket } from "lucide-react";
+import planetUrl from "../../assets/planet.png";
+import logoOrangeUrl from "../../assets/logo-orange.png";
 
 interface AppBrandProps {
   className?: string;
@@ -6,9 +7,26 @@ interface AppBrandProps {
 
 export function AppBrand({ className = "" }: AppBrandProps) {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <Rocket className="h-5 w-5 shrink-0 text-brand1-600" aria-hidden />
-      <p className="text-sm font-semibold uppercase tracking-wide text-slate-800">Kiddle Pass</p>
+    <div className={`flex items-center ${className}`}>
+      <img
+        src={planetUrl}
+        alt=""
+        aria-hidden
+        width={48}
+        height={48}
+        decoding="async"
+        loading="eager"
+        fetchPriority="high"
+        className="h-12 w-12 shrink-0 object-contain"
+      />
+      <img
+        src={logoOrangeUrl}
+        alt="Kiddle Pass"
+        decoding="async"
+        loading="eager"
+        fetchPriority="high"
+        className="h-8 w-auto shrink-0 object-contain"
+      />
     </div>
   );
 }
