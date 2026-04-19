@@ -12,6 +12,7 @@ import { AppointmentListItem } from "./AppointmentListItem";
 import { AppointmentsFilters } from "./AppointmentsFilters";
 import { CreateAppointmentModal } from "./CreateAppointmentModal";
 import { DayWarningsModal } from "./DayWarningsModal";
+import { Plus } from "lucide-react";
 
 export function AppointmentsByDateCard() {
   const [dateMode, setDateMode] = useState<DateMode>("today");
@@ -115,17 +116,9 @@ export function AppointmentsByDateCard() {
               )}
             </span>
           </button>
-          <button
-            type="button"
-            onClick={() => setCreateAppointmentOpen(true)}
-            aria-haspopup="dialog"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-orange-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange-600 focus-visible:ring-offset-2"
-          >
-            Novo agendamento
-          </button>
         </div>
       </div>
-
+      
       <AppointmentsFilters
         dateMode={dateMode}
         onPresetSelect={(preset: DatePreset) => setDateMode(preset)}
@@ -151,6 +144,16 @@ export function AppointmentsByDateCard() {
           allLabel: "Todos os usuários"
         }}
       />
+
+      <button
+        type="button"
+        onClick={() => setCreateAppointmentOpen(true)}
+        aria-haspopup="dialog"
+        className="mb-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-orange-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange-600 focus-visible:ring-offset-2"
+      >
+        <Plus className="h-4 w-4" aria-hidden="true" />
+        Novo agendamento
+      </button>
 
       {isLoading ? (
         <div className="flex min-h-[320px] items-center justify-center">

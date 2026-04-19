@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import { DatePicker } from "../../../components/ui/DatePicker";
 import { Loading } from "../../../components/ui/Loading";
 import { DATE_PRESET_OPTIONS, type DateMode, type DatePreset } from "../lib/dates";
@@ -30,21 +31,30 @@ function chipClass(isActive: boolean, extra = ""): string {
 
 function FilterSelect({ filter }: { filter: SelectFilter }) {
   const { value, onChange, options, allLabel } = filter;
+  const isDisabled = options.length === 0;
 
   return (
-    <select
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-      disabled={options.length === 0}
-      className="rounded-md border border-slate-300 bg-brand-yellow-50 px-3 py-2 text-sm text-slate-700 outline-none focus:ring-2 focus:ring-brand-teal-500 disabled:cursor-not-allowed disabled:bg-brand-yellow-75 disabled:text-slate-400"
-    >
-      <option value="">{allLabel}</option>
-      {options.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
+    <div className="relative">
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        disabled={isDisabled}
+        className="w-full appearance-none rounded-md border border-slate-300 bg-brand-yellow-50 px-3 py-2 pr-9 text-xs text-slate-700 outline-none focus:ring-2 focus:ring-brand-teal-500 disabled:cursor-not-allowed disabled:bg-brand-yellow-75 disabled:text-slate-400"
+      >
+        <option value="">{allLabel}</option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      <ChevronDown
+        aria-hidden
+        className={`pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 ${
+          isDisabled ? "text-slate-400" : "text-slate-500"
+        }`}
+      />
+    </div>
   );
 }
 
@@ -59,7 +69,7 @@ export function AppointmentsFilters({
   isFiltering
 }: AppointmentsFiltersProps) {
   return (
-    <div className="mb-6 space-y-3 rounded-lg border border-slate-200 p-3">
+    <div className="mb-4 space-y-3 rounded-lg border border-slate-200 p-3">
       <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Filtros</span>
         {isFiltering ? <Loading message="Aplicando filtros..." size="sm" /> : null}

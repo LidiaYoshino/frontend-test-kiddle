@@ -82,6 +82,11 @@ body {
   }
 }
 
+.rdp-chevron {
+  width: 16px;
+  height: 16px;
+}
+
 @layer components {
   .sheet-overlay {
     animation-duration: 300ms;

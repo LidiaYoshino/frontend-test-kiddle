@@ -2,8 +2,24 @@ import * as Popover from "@radix-ui/react-popover";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
+import type { CSSProperties } from "react";
 import { DayPicker, type Matcher } from "react-day-picker";
 import "react-day-picker/style.css";
+
+const DAY_PICKER_STYLE = {
+  "--rdp-accent-color": "#F95933",
+  "--rdp-accent-background-color": "#ffd6cc",
+  "--rdp-today-color": "#F95933",
+  "--rdp-day-width": "36px",
+  "--rdp-day-height": "36px",
+  "--rdp-day_button-width": "34px",
+  "--rdp-day_button-height": "34px",
+  "--rdp-nav_button-width": "1.75rem",
+  "--rdp-nav_button-height": "1.75rem",
+  "--rdp-nav-height": "2.25rem",
+  padding: "0 8px",
+  fontSize: "0.8125rem"
+} as CSSProperties;
 
 interface DatePickerProps {
   value: Date | null;
@@ -24,7 +40,7 @@ interface DatePickerProps {
 }
 
 const DEFAULT_TRIGGER_CLASS =
-  "inline-flex w-full items-center justify-between gap-2 rounded-md border border-slate-300 bg-brand-yellow-50 px-3 py-2 text-sm text-slate-700 outline-none focus:ring-2 focus:ring-brand-teal-500";
+  "inline-flex w-full items-center justify-between gap-2 rounded-md border border-slate-300 bg-brand-yellow-50 px-3 py-2 text-sm text-slate-700 outline-none transition hover:text-slate-900 focus:ring-2 focus:ring-brand-teal-500";
 
 export function DatePicker({
   value,
@@ -55,10 +71,10 @@ export function DatePicker({
             id={id}
             type="button"
             disabled={triggerDisabled}
-            className={`${triggerClassName ?? DEFAULT_TRIGGER_CLASS} disabled:cursor-not-allowed disabled:bg-brand-yellow-75 disabled:text-slate-400`}
+            className={`${triggerClassName ?? DEFAULT_TRIGGER_CLASS} disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-brand-yellow-100 disabled:text-slate-400`}
           >
-            <span className={formattedValue ? "" : "text-slate-400"}>{formattedValue || placeholder}</span>
-            <CalendarIcon className="h-4 w-4 text-slate-400" aria-hidden="true" />
+            <span>{formattedValue || placeholder}</span>
+            <CalendarIcon className="h-4 w-4" aria-hidden="true" />
           </button>
         </Popover.Trigger>
         <Popover.Portal>
@@ -74,6 +90,7 @@ export function DatePicker({
               selected={value ?? undefined}
               defaultMonth={monthToShow}
               disabled={disabled}
+              style={DAY_PICKER_STYLE}
               onSelect={(selected) => {
                 if (selected) {
                   onChange(selected);

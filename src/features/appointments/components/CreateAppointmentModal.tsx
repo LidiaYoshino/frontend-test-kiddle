@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import type { Matcher } from "react-day-picker";
-import { type FormEvent, useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState, type SubmitEventHandler } from "react";
 import { DatePicker } from "../../../components/ui/DatePicker";
 import { ErrorMessage } from "../../../components/ui/ErrorMessage";
 import { Loading } from "../../../components/ui/Loading";
@@ -193,7 +193,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
     }
   };
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     setSubmitError(null);
 
