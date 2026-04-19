@@ -1,7 +1,8 @@
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Card } from "../../../components/ui/Card";
 import { ErrorMessage } from "../../../components/ui/ErrorMessage";
 import { Loading } from "../../../components/ui/Loading";
+import { Toast } from "../../../components/ui/Toast";
 import type { DayAppointment } from "../../../types/api";
 import { useAppointmentsByDate } from "../hooks/useAppointmentsByDate";
 import { sortAppointmentsByTime, sortedUnique } from "../lib/appointments";
@@ -23,6 +24,7 @@ export function AppointmentsByDateCard() {
   const [selectedAppointment, setSelectedAppointment] = useState<DayAppointment | null>(null);
   const [dayWarningsOpen, setDayWarningsOpen] = useState(false);
   const [createAppointmentOpen, setCreateAppointmentOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const requestedDate = useMemo(() => {
     if (dateMode === "custom") {
@@ -88,6 +90,11 @@ export function AppointmentsByDateCard() {
     setCustomDate(date);
     setDateMode("custom");
   };
+
+  const handleAppointmentCreated = useCallback(() => {
+    setSuccessMessage("Agendamento criado com sucesso.");
+    void refetch();
+  }, [refetch]);
 
   return (
     <Card>
@@ -183,7 +190,13 @@ export function AppointmentsByDateCard() {
       <CreateAppointmentModal
         open={createAppointmentOpen}
         onClose={() => setCreateAppointmentOpen(false)}
-        onCreated={() => void refetch()}
+        onCreated={handleAppointmentCreated}
+      />
+      <Toast
+        open={successMessage !== null}
+        message={successMessage ?? ""}
+        onClose={() => setSuccessMessage(null)}
+        variant="success"
       />
     </Card>
   );
