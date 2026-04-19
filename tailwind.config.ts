@@ -29,6 +29,7 @@ export default {
           },
           yellow: {
             50: "#fffdf0",
+            75:  "#fff9da",
             100: "#fff7cc",
             200: "#fff1a3",
             500: "#FFED6C", // brand

@@ -101,7 +101,7 @@ export function AppointmentsByDateCard() {
             onClick={() => setDayWarningsOpen(true)}
             aria-expanded={dayWarningsOpen}
             aria-haspopup="dialog"
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-brand-yellow-50 px-4 py-2 text-sm font-medium text-slate-800 shadow-sm transition hover:bg-brand-yellow-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal-500 focus-visible:ring-offset-2"
           >
             Avisos do dia
             <span className="inline-flex min-h-[1.25rem] min-w-[1.25rem] items-center justify-center rounded-full bg-amber-100 px-2 py-0.5">
@@ -119,7 +119,7 @@ export function AppointmentsByDateCard() {
             type="button"
             onClick={() => setCreateAppointmentOpen(true)}
             aria-haspopup="dialog"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand1-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand1-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand1-600 focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-orange-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange-600 focus-visible:ring-offset-2"
           >
             Novo agendamento
           </button>

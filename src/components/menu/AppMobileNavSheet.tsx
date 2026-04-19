@@ -13,12 +13,12 @@ export function AppMobileNavSheet({ open, onOpenChange, items }: AppMobileNavShe
   return (
     <div className="md:hidden">
       <Sheet open={open} onOpenChange={onOpenChange} modal>
-        <SheetContent id="mobile-nav-drawer" aria-describedby="mobile-nav-description">
+        <SheetContent id="mobile-nav-drawer" aria-describedby="mobile-nav-description" className="bg-brand-yellow-50 border-none">
           <SheetDescription id="mobile-nav-description" className="sr-only">
             Primary navigation for the application.
           </SheetDescription>
-          <div className="flex shrink-0 items-center justify-between border-b border-slate-200 px-4 py-4">
-            <SheetTitle className="text-sm font-semibold text-slate-900">Menu</SheetTitle>
+          <div className="flex shrink-0 items-center justify-between bg-brand-yellow-200 p-4">
+            <SheetTitle className="text-md font-semibold text-slate-900">Menu</SheetTitle>
             <SheetClose asChild>
               <button
                 type="button"

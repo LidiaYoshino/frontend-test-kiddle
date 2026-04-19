@@ -24,7 +24,7 @@ interface DatePickerProps {
 }
 
 const DEFAULT_TRIGGER_CLASS =
-  "inline-flex w-full items-center justify-between gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:ring-2 focus:ring-blue-500";
+  "inline-flex w-full items-center justify-between gap-2 rounded-md border border-slate-300 bg-brand-yellow-50 px-3 py-2 text-sm text-slate-700 outline-none focus:ring-2 focus:ring-brand-teal-500";
 
 export function DatePicker({
   value,
@@ -55,7 +55,7 @@ export function DatePicker({
             id={id}
             type="button"
             disabled={triggerDisabled}
-            className={`${triggerClassName ?? DEFAULT_TRIGGER_CLASS} disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400`}
+            className={`${triggerClassName ?? DEFAULT_TRIGGER_CLASS} disabled:cursor-not-allowed disabled:bg-brand-yellow-75 disabled:text-slate-400`}
           >
             <span className={formattedValue ? "" : "text-slate-400"}>{formattedValue || placeholder}</span>
             <CalendarIcon className="h-4 w-4 text-slate-400" aria-hidden="true" />
@@ -65,7 +65,7 @@ export function DatePicker({
           <Popover.Content
             align="start"
             sideOffset={6}
-            className="z-50 rounded-lg border border-slate-200 bg-white p-2 shadow-lg outline-none"
+            className="z-50 rounded-lg border border-slate-200 bg-brand-yellow-50 p-2 shadow-lg outline-none"
           >
             <DayPicker
               key={remountKey}

@@ -151,7 +151,7 @@ export function DistributionCard({
             type="button"
             onClick={() => setViewMode("list")}
             className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-              viewMode === "list" ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
+              viewMode === "list" ? "bg-brand-yellow-50 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
             }`}
           >
             Lista
@@ -160,7 +160,7 @@ export function DistributionCard({
             type="button"
             onClick={() => setViewMode("chart")}
             className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-              viewMode === "chart" ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
+              viewMode === "chart" ? "bg-brand-yellow-50 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
             }`}
           >
             Gráfico

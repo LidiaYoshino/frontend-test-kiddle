@@ -26,8 +26,8 @@ interface CreateAppointmentModalProps {
 }
 
 const inputClass =
-  "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 outline-none ring-blue-500 placeholder:text-slate-400 focus:ring-2";
-const selectClass = `${inputClass} bg-white`;
+  "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 outline-none ring-brand-teal-500 placeholder:text-slate-400 focus:ring-2";
+const selectClass = `${inputClass} bg-brand-yellow-50`;
 const labelClass = "mb-1 block text-xs font-medium text-slate-600";
 
 function filterSubscribersWithKids(list: ActiveSubscriber[]): ActiveSubscriber[] {
@@ -372,7 +372,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
             ) : availableSlots.length === 0 ? (
               <p className="text-sm text-amber-800">Não há vagas neste dia para esta atividade. Escolha outra data.</p>
             ) : singleAvailableSlot ? (
-              <p className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800">
+              <p className="rounded-md border border-slate-200 bg-brand-yellow-50 px-3 py-2 text-sm text-slate-800">
                 {singleAvailableSlot.horarioInicio} – {singleAvailableSlot.horarioTermino}
                 <span className="text-slate-500"> · {singleAvailableSlot.vagas} vaga(s)</span>
               </p>
@@ -399,14 +399,14 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+              className="rounded-lg border border-slate-200 bg-brand-yellow-50 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-brand-yellow-75"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !formComplete}
-              className="inline-flex items-center gap-2 rounded-lg bg-brand1-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand1-600 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex items-center gap-2 rounded-lg bg-brand-orange-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-orange-600 disabled:cursor-not-allowed disabled:opacity-70"
             >
               <Plus className="h-4 w-4" aria-hidden="true" />
               {isSubmitting ? "Salvando..." : "Salvar agendamento"}

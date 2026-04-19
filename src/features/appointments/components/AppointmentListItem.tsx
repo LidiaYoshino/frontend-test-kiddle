@@ -21,7 +21,7 @@ export function AppointmentListItem({ appointment, onSelect }: AppointmentListIt
     <button
       type="button"
       onClick={() => onSelect(appointment)}
-      className="w-full rounded-lg border border-slate-200 p-3 text-left transition hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      className="w-full rounded-lg border border-slate-200 p-3 text-left transition hover:border-brand-teal-500 hover:bg-brand-yellow-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal-500"
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-sm font-semibold text-slate-800">{appointment.atividade}</p>

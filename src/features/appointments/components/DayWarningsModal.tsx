@@ -64,7 +64,7 @@ export function DayWarningsModal({ open, onClose, appointments, dateLabel }: Day
                     {items.map((entry, index) => (
                       <li
                         key={`${entry.appointment.id}-${entry.child.id}-${kind}-${index}`}
-                        className="rounded-lg border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-800"
+                        className="rounded-lg border border-slate-200 bg-brand-yellow-50 px-3 py-2 text-sm text-slate-800"
                       >
                         <p className="font-medium">{entry.child.nome}</p>
                         <p className="text-xs text-slate-600">

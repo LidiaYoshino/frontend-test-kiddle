@@ -11,7 +11,7 @@ export function Button({ asChild = false, className = "", ...props }: ButtonProp
 
   return (
     <Component
-      className={`inline-flex items-center justify-center gap-2 rounded-lg bg-brand1-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand1-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand1-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg bg-brand-orange-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 ${className}`}
       {...props}
     />
   );

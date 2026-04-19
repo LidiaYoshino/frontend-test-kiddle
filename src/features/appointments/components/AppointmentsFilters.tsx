@@ -21,8 +21,8 @@ interface AppointmentsFiltersProps {
 }
 
 const CHIP_BASE_CLASS = "rounded-md border px-3 py-1.5 text-xs font-medium transition";
-const CHIP_ACTIVE_CLASS = "border-blue-200 bg-blue-50 text-blue-700";
-const CHIP_INACTIVE_CLASS = "border-slate-200 bg-white text-slate-600 hover:text-slate-900";
+const CHIP_ACTIVE_CLASS = "border-brand-teal-500 bg-brand-teal-100 text-brand-teal-500";
+const CHIP_INACTIVE_CLASS = "border-slate-200 bg-brand-yellow-50 text-slate-600 hover:text-slate-900";
 
 function chipClass(isActive: boolean, extra = ""): string {
   return `${CHIP_BASE_CLASS} ${isActive ? CHIP_ACTIVE_CLASS : CHIP_INACTIVE_CLASS} ${extra}`.trim();
@@ -36,7 +36,7 @@ function FilterSelect({ filter }: { filter: SelectFilter }) {
       value={value}
       onChange={(event) => onChange(event.target.value)}
       disabled={options.length === 0}
-      className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
+      className="rounded-md border border-slate-300 bg-brand-yellow-50 px-3 py-2 text-sm text-slate-700 outline-none focus:ring-2 focus:ring-brand-teal-500 disabled:cursor-not-allowed disabled:bg-brand-yellow-75 disabled:text-slate-400"
     >
       <option value="">{allLabel}</option>
       {options.map((option) => (
