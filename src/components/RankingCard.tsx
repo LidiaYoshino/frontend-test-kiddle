@@ -17,7 +17,7 @@ function RankingList({ items }: { items: string[] }) {
     <ol className="space-y-2">
       {items.map((activity, index) => (
         <li key={`${activity}-${index}`} className="flex items-start gap-2 text-sm text-slate-700">
-          <span className="mt-0.5 inline-flex min-w-6 justify-center rounded bg-slate-100 px-1.5 py-0.5 text-xs font-semibold text-slate-600">
+          <span className="mt-0.5 inline-flex min-w-6 justify-center rounded bg-brand-teal-100/50 px-1.5 py-0.5 text-xs font-semibold text-slate-600">
             {index + 1}
           </span>
           <span>{activity}</span>
