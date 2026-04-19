@@ -160,6 +160,7 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
   const resolvedSlotIndex =
     availableSlots.length > 0 ? Math.min(slotIndex, availableSlots.length - 1) : 0;
   const selectedSlot = availableSlots[resolvedSlotIndex];
+  const singleAvailableSlot = availableSlots.length === 1 ? availableSlots[0] : null;
 
   useEffect(() => {
     setSlotIndex(0);
@@ -370,10 +371,10 @@ export function CreateAppointmentModal({ open, onClose, dateLabel, onCreated }: 
               <p className="text-sm text-slate-500">Escolha uma data em que a atividade ocorre.</p>
             ) : availableSlots.length === 0 ? (
               <p className="text-sm text-amber-800">Não há vagas neste dia para esta atividade. Escolha outra data.</p>
-            ) : availableSlots.length === 1 ? (
+            ) : singleAvailableSlot ? (
               <p className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800">
-                {availableSlots[0].horarioInicio} – {availableSlots[0].horarioTermino}
-                <span className="text-slate-500"> · {availableSlots[0].vagas} vaga(s)</span>
+                {singleAvailableSlot.horarioInicio} – {singleAvailableSlot.horarioTermino}
+                <span className="text-slate-500"> · {singleAvailableSlot.vagas} vaga(s)</span>
               </p>
             ) : (
               <select
