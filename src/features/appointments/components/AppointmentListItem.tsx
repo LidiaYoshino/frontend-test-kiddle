@@ -21,44 +21,46 @@ export function AppointmentListItem({ appointment, onSelect }: AppointmentListIt
     <button
       type="button"
       onClick={() => onSelect(appointment)}
-      className="w-full rounded-lg border border-slate-200 p-3 text-left transition hover:border-brand-teal-500 hover:bg-brand-yellow-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal-500"
+      className="w-full flex flex-row justify-between rounded-lg border border-slate-200 p-4 pt-3 text-left transition hover:border-brand-yellow-500 hover:bg-brand-yellow-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal-500"
     >
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-sm font-semibold text-slate-800">{appointment.atividade}</p>
-        <div className="flex items-center gap-1.5">
+      <div className="flex flex-col justify-between gap-2">
+        <p className="text-md font-semibold text-slate-800">{appointment.atividade}</p>
+        <p className="mt-1 text-xs text-slate-500">Parceiro: {appointment.parceiro}</p>
+        <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-600">
+          <span className="rounded bg-brand-orange-100/80 px-2 py-1 font-medium text-brand-orange-500">
+            {appointment.criancas.length} agendamento(s)
+          </span>
+          <span className="rounded bg-brand-teal-100/80 px-2 py-1 font-medium text-brand-teal-500">{spotsLeftLabel}</span>
+        </div>
+      </div>
+      <div className="flex flex-col justify-between gap-1.5">
+        <span className="text-sm font-semibold text-slate-800">{appointment.horario}</span>
+        <div className="flex flex-row gap-1.5 justify-end">
           {hasBirthday ? (
             <WarningDot tone="amber" label="Há aniversariante(s)">
-              <Cake className="h-3 w-3" aria-hidden="true" />
+              <Cake className="h-4 w-4" aria-hidden="true" />
             </WarningDot>
           ) : null}
           {hasDeficiency ? (
             <WarningDot tone="violet" label="Há criança(s) com deficiência">
-              <Accessibility className="h-3 w-3" aria-hidden="true" />
+              <Accessibility className="h-4 w-4" aria-hidden="true" />
             </WarningDot>
           ) : null}
           {hasInterpreter ? (
             <WarningDot tone="sky" label="Precisa(m) de intérprete">
-              <Languages className="h-3 w-3" aria-hidden="true" />
+              <Languages className="h-4 w-4" aria-hidden="true" />
             </WarningDot>
           ) : null}
-          <span className="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">{appointment.horario}</span>
         </div>
-      </div>
-      <p className="mt-1 text-xs text-slate-500">Parceiro: {appointment.parceiro}</p>
-      <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-600">
-        <span className="rounded bg-blue-50 px-2 py-1 font-medium text-blue-700">
-          {appointment.criancas.length} agendamento(s)
-        </span>
-        <span className="rounded bg-emerald-50 px-2 py-1 font-medium text-emerald-700">{spotsLeftLabel}</span>
       </div>
     </button>
   );
 }
 
 const WARNING_DOT_CLASSES = {
-  amber: "bg-amber-50 text-amber-700",
-  violet: "bg-violet-50 text-violet-700",
-  sky: "bg-sky-50 text-sky-700"
+  amber: "bg-amber-50 text-amber-700 border-amber-500",
+  violet: "bg-violet-50 text-violet-700 border-violet-500",
+  sky: "bg-sky-50 text-sky-700 border-sky-500"
 } as const;
 
 function WarningDot({
@@ -75,7 +77,7 @@ function WarningDot({
       role="img"
       aria-label={label}
       title={label}
-      className={`inline-flex h-6 w-6 items-center justify-center rounded-full ${WARNING_DOT_CLASSES[tone]}`}
+      className={`inline-flex h-7 w-7 items-center justify-center rounded-full border-2 ${WARNING_DOT_CLASSES[tone]}`}
     >
       {children}
     </span>

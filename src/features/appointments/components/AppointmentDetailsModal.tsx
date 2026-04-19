@@ -133,12 +133,15 @@ function ChildRow({ child, appointmentDate }: { child: AppointmentChild; appoint
   return (
     <li className="rounded-lg border border-slate-200 p-3">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <div>
+        <div className="flex flex-col gap-1">
           <p className="text-sm font-medium text-slate-800">{child.nome}</p>
+          {age !== null && <p className="text-xs text-slate-500">
+            {age} ano(s)
+          </p>}
           <p className="text-xs text-slate-500">
             Responsável: {child.responsavel}
-            {age !== null ? ` · ${age} ano(s)` : ""}
           </p>
+          {child.observation ? <p className="text-xs text-slate-600">Obs.: {child.observation}</p> : null}
         </div>
         <div className="flex flex-wrap gap-1">
           {isBirthday ? (
@@ -158,7 +161,6 @@ function ChildRow({ child, appointmentDate }: { child: AppointmentChild; appoint
           ) : null}
         </div>
       </div>
-      {child.observation ? <p className="mt-2 text-xs text-slate-600">Obs.: {child.observation}</p> : null}
     </li>
   );
 }
