@@ -33,9 +33,9 @@ function DistributionList({ items }: { items: DistributionItem[] }) {
             <span>{item.label}</span>
             <span className="font-medium">{item.percentage.toFixed(1)}%</span>
           </div>
-          <div className="h-2 rounded bg-slate-100">
+          <div className="h-2 rounded bg-brand-teal-100/50">
             <div
-              className="h-full rounded bg-blue-500 transition-[width] duration-300"
+              className="h-full rounded bg-brand-teal-500 transition-[width] duration-300"
               style={{ width: `${Math.min(Math.max(item.percentage, 0), 100)}%` }}
             />
           </div>
@@ -53,14 +53,14 @@ function DistributionChart({ items }: { items: DistributionItem[] }) {
         label: "Distribuição",
         data: items.map((item) => item.percentage),
         backgroundColor: [
-          "rgba(37, 99, 235, 0.8)",
-          "rgba(14, 165, 233, 0.8)",
-          "rgba(16, 185, 129, 0.8)",
-          "rgba(234, 179, 8, 0.8)",
-          "rgba(249, 115, 22, 0.8)",
-          "rgba(239, 68, 68, 0.8)",
-          "rgba(168, 85, 247, 0.8)",
-          "rgba(236, 72, 153, 0.8)"
+          "rgba(249, 89, 51, 0.85)",
+          "rgba(25, 182, 182, 0.85)",
+          "rgba(255, 237, 108, 0.9)",
+          "rgba(166, 59, 34, 0.85)",
+          "rgba(15, 119, 119, 0.85)",
+          "rgba(179, 166, 71, 0.9)",
+          "rgba(255, 214, 204, 0.9)",
+          "rgba(204, 242, 242, 0.9)"
         ],
         borderColor: "#ffffff",
         borderWidth: 2
@@ -139,34 +139,38 @@ export function DistributionCard({
 
   const items = payload ? toDistributionItems(payload, sortEntries) : [];
 
+  const canShowToggle = !isLoading && !error && items.length > 0;
+
   return (
     <Card>
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h2 className="mb-1 text-sm font-medium uppercase tracking-wide text-slate-500">{title}</h2>
-          <p className="text-sm text-slate-600">{description}</p>
-        </div>
-        <div className="inline-flex rounded-lg border border-slate-200 bg-slate-100 p-1">
-          <button
-            type="button"
-            onClick={() => setViewMode("list")}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-              viewMode === "list" ? "bg-brand-yellow-50 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Lista
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewMode("chart")}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-              viewMode === "chart" ? "bg-brand-yellow-50 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Gráfico
-          </button>
-        </div>
+      <div className="mb-2">
+        <h2 className="mb-1 text-sm font-medium uppercase tracking-wide text-slate-500">{title}</h2>
+        <p className="text-sm text-slate-600">{description}</p>
       </div>
+      {canShowToggle ? (
+        <div className="mb-3 flex justify-end">
+          <div className="inline-flex rounded-lg border border-slate-200 bg-brand-teal-50 p-1">
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                viewMode === "list" ? "bg-brand-teal-100 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              Lista
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("chart")}
+              className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                viewMode === "chart" ? "bg-brand-teal-100 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              Gráfico
+            </button>
+          </div>
+        </div>
+      ) : null}
       {isLoading ? (
         <div className="flex min-h-[210px] items-center justify-center">
           <Loading message="Carregando..." size="lg" />
