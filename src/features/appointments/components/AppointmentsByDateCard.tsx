@@ -1,7 +1,8 @@
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Card } from "../../../components/ui/Card";
 import { ErrorMessage } from "../../../components/ui/ErrorMessage";
 import { Loading } from "../../../components/ui/Loading";
+import { Toast } from "../../../components/ui/Toast";
 import type { DayAppointment } from "../../../types/api";
 import { useAppointmentsByDate } from "../hooks/useAppointmentsByDate";
 import { sortAppointmentsByTime, sortedUnique } from "../lib/appointments";
@@ -12,6 +13,7 @@ import { AppointmentListItem } from "./AppointmentListItem";
 import { AppointmentsFilters } from "./AppointmentsFilters";
 import { CreateAppointmentModal } from "./CreateAppointmentModal";
 import { DayWarningsModal } from "./DayWarningsModal";
+import { Plus } from "lucide-react";
 
 export function AppointmentsByDateCard() {
   const [dateMode, setDateMode] = useState<DateMode>("today");
@@ -22,6 +24,7 @@ export function AppointmentsByDateCard() {
   const [selectedAppointment, setSelectedAppointment] = useState<DayAppointment | null>(null);
   const [dayWarningsOpen, setDayWarningsOpen] = useState(false);
   const [createAppointmentOpen, setCreateAppointmentOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const requestedDate = useMemo(() => {
     if (dateMode === "custom") {
@@ -88,6 +91,11 @@ export function AppointmentsByDateCard() {
     setDateMode("custom");
   };
 
+  const handleAppointmentCreated = useCallback(() => {
+    setSuccessMessage("Agendamento criado com sucesso.");
+    void refetch();
+  }, [refetch]);
+
   return (
     <Card>
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -101,7 +109,7 @@ export function AppointmentsByDateCard() {
             onClick={() => setDayWarningsOpen(true)}
             aria-expanded={dayWarningsOpen}
             aria-haspopup="dialog"
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-brand-yellow-50 px-4 py-2 text-sm font-medium text-slate-800 shadow-sm transition hover:bg-brand-yellow-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal-500 focus-visible:ring-offset-2"
           >
             Avisos do dia
             <span className="inline-flex min-h-[1.25rem] min-w-[1.25rem] items-center justify-center rounded-full bg-amber-100 px-2 py-0.5">
@@ -115,17 +123,9 @@ export function AppointmentsByDateCard() {
               )}
             </span>
           </button>
-          <button
-            type="button"
-            onClick={() => setCreateAppointmentOpen(true)}
-            aria-haspopup="dialog"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-          >
-            Novo agendamento
-          </button>
         </div>
       </div>
-
+      
       <AppointmentsFilters
         dateMode={dateMode}
         onPresetSelect={(preset: DatePreset) => setDateMode(preset)}
@@ -151,6 +151,16 @@ export function AppointmentsByDateCard() {
           allLabel: "Todos os usuários"
         }}
       />
+
+      <button
+        type="button"
+        onClick={() => setCreateAppointmentOpen(true)}
+        aria-haspopup="dialog"
+        className="mb-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-orange-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange-600 focus-visible:ring-offset-2"
+      >
+        <Plus className="h-4 w-4" aria-hidden="true" />
+        Novo agendamento
+      </button>
 
       {isLoading ? (
         <div className="flex min-h-[320px] items-center justify-center">
@@ -180,8 +190,13 @@ export function AppointmentsByDateCard() {
       <CreateAppointmentModal
         open={createAppointmentOpen}
         onClose={() => setCreateAppointmentOpen(false)}
-        dateLabel={requestedDateLabel}
-        onCreated={() => void refetch()}
+        onCreated={handleAppointmentCreated}
+      />
+      <Toast
+        open={successMessage !== null}
+        message={successMessage ?? ""}
+        onClose={() => setSuccessMessage(null)}
+        variant="success"
       />
     </Card>
   );

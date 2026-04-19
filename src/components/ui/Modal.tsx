@@ -13,7 +13,7 @@ export function ModalContent({ className = "", children, ...props }: ComponentPr
     <Dialog.Portal>
       <Dialog.Overlay className="modal-overlay fixed inset-0 z-40 bg-slate-900/40 data-[state=closed]:pointer-events-none" />
       <Dialog.Content
-        className={`modal-panel fixed left-1/2 top-1/2 z-50 w-[min(92vw,36rem)] max-h-[90vh] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl bg-white p-6 shadow-xl outline-none data-[state=closed]:pointer-events-none ${className}`}
+        className={`modal-panel fixed left-1/2 top-1/2 z-50 w-[min(92vw,36rem)] max-h-[90vh] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl bg-brand-yellow-50 p-6 shadow-xl outline-none data-[state=closed]:pointer-events-none ${className}`}
         {...props}
       >
         <Dialog.Close asChild>

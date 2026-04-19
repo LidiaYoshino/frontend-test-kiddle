@@ -11,10 +11,10 @@ interface DayWarningsModalProps {
   dateLabel: string;
 }
 
-const SECTIONS: { kind: DayWarningKind; title: string; icon: LucideIcon }[] = [
-  { kind: "birthday", title: "Aniversariantes", icon: Cake },
-  { kind: "deficiency", title: "Atenção especial", icon: Accessibility },
-  { kind: "interpreter", title: "Intérprete", icon: Languages }
+const SECTIONS: { kind: DayWarningKind; title: string; icon: LucideIcon; className: string }[] = [
+  { kind: "birthday", title: "Aniversariantes", icon: Cake, className: "text-amber-700" },
+  { kind: "deficiency", title: "Atenção especial", icon: Accessibility, className: "text-violet-700" },
+  { kind: "interpreter", title: "Intérprete", icon: Languages, className: "text-sky-700" }
 ];
 
 export function DayWarningsModal({ open, onClose, appointments, dateLabel }: DayWarningsModalProps) {
@@ -48,7 +48,7 @@ export function DayWarningsModal({ open, onClose, appointments, dateLabel }: Day
           <p className="mt-6 text-sm text-slate-600">Nenhum aviso para este dia.</p>
         ) : (
           <div className="mt-6 space-y-6">
-            {SECTIONS.map(({ kind, title, icon: Icon }) => {
+            {SECTIONS.map(({ kind, title, icon: Icon, className }) => {
               const items = byKind.get(kind) ?? [];
               if (items.length === 0) {
                 return null;
@@ -56,15 +56,15 @@ export function DayWarningsModal({ open, onClose, appointments, dateLabel }: Day
 
               return (
                 <section key={kind}>
-                  <h3 className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-                    <Icon className="h-4 w-4 text-slate-400" aria-hidden="true" />
+                  <h3 className={`mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wide ${className}`}>
+                    <Icon className="h-4 w-4" aria-hidden="true" />
                     {title}
                   </h3>
                   <ul className="space-y-2">
                     {items.map((entry, index) => (
                       <li
                         key={`${entry.appointment.id}-${entry.child.id}-${kind}-${index}`}
-                        className="rounded-lg border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-800"
+                        className="rounded-lg border border-slate-200 bg-brand-yellow-50 px-3 py-2 text-sm text-slate-800"
                       >
                         <p className="font-medium">{entry.child.nome}</p>
                         <p className="text-xs text-slate-600">

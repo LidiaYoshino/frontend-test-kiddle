@@ -12,7 +12,7 @@ export function SheetContent({ className = "", children, ...props }: ComponentPr
     <Dialog.Portal>
       <Dialog.Overlay className="sheet-overlay fixed inset-0 z-40 bg-slate-900/40 data-[state=closed]:pointer-events-none" />
       <Dialog.Content
-        className={`sheet-panel fixed inset-y-0 right-0 z-50 flex w-[min(85vw,18rem)] max-h-screen flex-col overflow-hidden border-l border-slate-200 bg-white shadow-xl outline-none data-[state=closed]:pointer-events-none ${className}`}
+        className={`sheet-panel fixed inset-y-0 right-0 z-50 flex w-[min(85vw,18rem)] max-h-screen flex-col overflow-hidden border-l border-slate-200 bg-brand-yellow-50 shadow-xl outline-none data-[state=closed]:pointer-events-none ${className}`}
         {...props}
       >
         {children}

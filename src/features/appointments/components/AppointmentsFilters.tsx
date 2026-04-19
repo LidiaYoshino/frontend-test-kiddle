@@ -1,5 +1,6 @@
 import { DatePicker } from "../../../components/ui/DatePicker";
 import { Loading } from "../../../components/ui/Loading";
+import { Select } from "../../../components/ui/Select";
 import { DATE_PRESET_OPTIONS, type DateMode, type DatePreset } from "../lib/dates";
 
 export interface SelectFilter {
@@ -21,8 +22,8 @@ interface AppointmentsFiltersProps {
 }
 
 const CHIP_BASE_CLASS = "rounded-md border px-3 py-1.5 text-xs font-medium transition";
-const CHIP_ACTIVE_CLASS = "border-blue-200 bg-blue-50 text-blue-700";
-const CHIP_INACTIVE_CLASS = "border-slate-200 bg-white text-slate-600 hover:text-slate-900";
+const CHIP_ACTIVE_CLASS = "border-brand-teal-500 bg-brand-teal-100 text-brand-teal-500";
+const CHIP_INACTIVE_CLASS = "border-slate-200 bg-brand-yellow-50 text-slate-600 hover:text-slate-900";
 
 function chipClass(isActive: boolean, extra = ""): string {
   return `${CHIP_BASE_CLASS} ${isActive ? CHIP_ACTIVE_CLASS : CHIP_INACTIVE_CLASS} ${extra}`.trim();
@@ -30,13 +31,14 @@ function chipClass(isActive: boolean, extra = ""): string {
 
 function FilterSelect({ filter }: { filter: SelectFilter }) {
   const { value, onChange, options, allLabel } = filter;
+  const isDisabled = options.length === 0;
 
   return (
-    <select
+    <Select
+      uiSize="sm"
       value={value}
       onChange={(event) => onChange(event.target.value)}
-      disabled={options.length === 0}
-      className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
+      disabled={isDisabled}
     >
       <option value="">{allLabel}</option>
       {options.map((option) => (
@@ -44,7 +46,7 @@ function FilterSelect({ filter }: { filter: SelectFilter }) {
           {option}
         </option>
       ))}
-    </select>
+    </Select>
   );
 }
 
@@ -59,7 +61,7 @@ export function AppointmentsFilters({
   isFiltering
 }: AppointmentsFiltersProps) {
   return (
-    <div className="mb-6 space-y-3 rounded-lg border border-slate-200 p-3">
+    <div className="mb-4 space-y-3 rounded-lg border border-slate-200 p-3">
       <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Filtros</span>
         {isFiltering ? <Loading message="Aplicando filtros..." size="sm" /> : null}
